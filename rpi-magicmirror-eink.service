@@ -1,0 +1,11 @@
+[Unit]
+Description=RPi MagicMirror EInk
+
+[Service]
+WorkingDirectory=/home/pi/repos/rpi-magicmirror-eink/
+ExecStart=/home/pi/repos/rpi-magicmirror-eink/run.sh
+Restart=on-failure
+User=pi
+
+[Install]
+WantedBy=multi-user.target
