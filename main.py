@@ -9,6 +9,7 @@ from pyppeteer import launch
 from PIL import Image
 
 # TODO fix ignored KeyboardInterrupt when running in the the event loop (run_forever)
+# TODO implement proper reset and shutdown of the screen when the systemd service is stopped or the raspberry pi is shut down
 
 # Import the waveshare folder (containing the waveshare display drivers) without refactoring it to a module
 # TODO maybe switch to a git submodule here and upgrade to the latest version:

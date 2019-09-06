@@ -1,3 +1,5 @@
+![Screenshot](screenshot.jpg)
+
 ## How it works
 This script is inspired by [BenRoe's rpi-magic-mirror-eink](https://github.com/BenRoe/rpi-magicmirror-eink), but is fully implemented in python.
 
