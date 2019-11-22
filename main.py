@@ -4,12 +4,14 @@ import logging
 import tempfile
 import argparse
 import sys
+import numpy as np
 from aiocron import crontab
 from pyppeteer import launch
 from PIL import Image
 
 # TODO fix ignored KeyboardInterrupt when running in the the event loop (run_forever)
 # TODO implement proper reset and shutdown of the screen when the systemd service is stopped or the raspberry pi is shut down
+# TODO maybe a "last updated" time (just a clock module with a different header)
 
 # Import the waveshare folder (containing the waveshare display drivers) without refactoring it to a module
 # TODO maybe switch to a git submodule here and upgrade to the latest version:
@@ -55,6 +57,24 @@ async def create_screenshot(file_path):
     logging.debug('Finished creating screenshot')
 
 
+def remove_aliasing_artefacts(image):
+    red = (255,000,000)
+    black = (000,000,000)
+    white = (255,255,255)
+    img = image.convert('RGB')
+    data = np.array(img)
+    # If the R value of the pixel is less than 50, make it black
+    black_mask = np.bitwise_and(data[:,:,0] <= 230, data[:,:,1] <= 135, data[:,:,2] <= 135)
+    # If the R value is higher than
+    red_mask = np.bitwise_and(data[:,:,0] >= 230, data[:,:,1] <= 135, data[:,:,2] <= 135)
+    # Everything else should be white
+    white_mask = np.bitwise_not(np.bitwise_or(red_mask, black_mask))
+    data[black_mask] = black
+    data[red_mask] = red
+    data[white_mask] = white
+    return Image.fromarray(data, mode='RGB')
+
+
 async def refresh():
     logging.info('Starting refresh.')
     logging.debug('Initializing / waking screen.')
@@ -65,6 +85,8 @@ async def refresh():
         await create_screenshot(tmp_file.name)
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
+        # Replace all colors with are neither black nor red with white
+        image = remove_aliasing_artefacts(image)
         # Rotate the image by 90°
         if is_portrait:
            logging.debug('Rotating image (portrait mode).')
