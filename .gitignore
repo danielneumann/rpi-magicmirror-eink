@@ -1,3 +1,8 @@
+# In this File:
+# 1)  https://www.gitignore.io/api/venv,python,intellij+all
+# 2)  https://www.gitignore.io/api/visualstudiocode
+
+
 
 # Created by https://www.gitignore.io/api/venv,python,intellij+all
 # Edit at https://www.gitignore.io/?templates=venv,python,intellij+all
@@ -227,3 +232,21 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.gitignore.io/api/venv,python,intellij+all
+
+
+
+# Created by https://www.gitignore.io/api/visualstudiocode
+# Edit at https://www.gitignore.io/?templates=visualstudiocode
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/visualstudiocode
