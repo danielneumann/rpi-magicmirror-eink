@@ -17,13 +17,14 @@ from PIL import Image
 # TODO maybe switch to a git submodule here and upgrade to the latest version:
 # https://github.com/waveshare/e-Paper/blob/master/RaspberryPi%26JetsonNano/python/lib/waveshare_epd/epd7in5bc.py
 sys.path.insert(0, './waveshare')
-import epd7in5b
+# import epd7in5b
+import epd9in7
 
 
 # Global config
-display_width = 384		# Width of the display
-display_height = 640		# Height of the display
-is_portrait = True		# True of the display should be in landscape mode (make sure to adjust the width and height accordingly)
+display_width = 1200		# Width of the display
+display_height = 825		# Height of the display
+is_portrait = False		# True of the display should be in landscape mode (make sure to adjust the width and height accordingly)
 wait_to_load = 60		# Page load timeout
 wait_after_load = 18		# Time to evaluate the JS afte the page load (f.e. to lazy-load the calendar data)
 url = 'http://localhost:8080'	# URL to create the screenshot of
@@ -31,7 +32,8 @@ url = 'http://localhost:8080'	# URL to create the screenshot of
 def reset_screen():
     global display_width
     global display_height
-    epd = epd7in5b.EPD()
+#   epd = epd7in5b.EPD()
+    epd = epd9in7.EPD()
     epd.init()
     epd.display_frame([0xFF] * int(display_width * display_height / 4))
     epd.sleep()
@@ -51,7 +53,7 @@ async def create_screenshot(file_path):
         "height": display_height
     })
     await page.goto(url, timeout=wait_to_load * 1000)
-    await page.waitFor(wait_after_load * 1000);
+    await page.waitFor(wait_after_load * 1000)
     await page.screenshot({'path': file_path})
     await browser.close()
     logging.debug('Finished creating screenshot')
@@ -78,7 +80,9 @@ def remove_aliasing_artefacts(image):
 async def refresh():
     logging.info('Starting refresh.')
     logging.debug('Initializing / waking screen.')
-    epd = epd7in5b.EPD()
+#    epd = epd7in5b.EPD()
+    epd = epd9in7.EPD()
+
     epd.init()
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
         logging.debug(f'Created temporary file at {tmp_file.name}.')
@@ -86,7 +90,7 @@ async def refresh():
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
         # Replace all colors with are neither black nor red with white
-        image = remove_aliasing_artefacts(image)
+        # image = remove_aliasing_artefacts(image)
         # Rotate the image by 90°
         if is_portrait:
            logging.debug('Rotating image (portrait mode).')

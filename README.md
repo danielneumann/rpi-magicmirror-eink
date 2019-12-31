@@ -20,6 +20,9 @@ The python script uses [pyppeteer (Python implementation of Chromium's instrumen
   sudo apt update && sudo apt install git python3.7-venv python3-venv libatlas-base-dev -y
   # Make sure to check the script before executing the next part! You are about to pipe a script from the world wide web to bash! At least it's not root...
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+  # Reload bashrc if you are connected via SSH
+  . ~/.bashrc
+  # Install NodeJS (Takes very long!)
   nvm install --lts
   ```
 - We need an older version of chrome (as there are problems with the current puppeteer version and Chromium 74):
