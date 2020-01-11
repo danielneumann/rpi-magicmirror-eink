@@ -154,17 +154,6 @@ class EPD:
             raise ValueError('Image must be same dimensions as display \
                 ({0}x{1}).' .format(self.width, self.height))
 
-        pixels = image_grayscale.load()
-        for y in range(self.height):
-            for x in range(self.width):
-                # Set the bits for the column of pixels at the current position.
-                if pixels[x, y] < 64:           # black
-                    buf[int((x + y * self.width) / 4)] &= ~(0xC0 >> (x % 4 * 2))
-                elif pixels[x, y] < 192:     # convert gray to red
-                    buf[int((x + y * self.width) / 4)] &= ~(0xC0 >> (x % 4 * 2))
-                    buf[int((x + y * self.width) / 4)] |= 0x40 >> (x % 4 * 2)
-                else:                           # white
-                    buf[int((x + y * self.width) / 4)] |= 0xC0 >> (x % 4 * 2)
         return buf
 
     def display_frame(self, frame_buffer):
