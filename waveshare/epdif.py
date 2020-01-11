@@ -28,9 +28,9 @@ import spidev
 import RPi.GPIO as GPIO
 import time
 
-# Pin definition
+# Pin definition - see http://samanl33t.github.io/images/gpio_layout.jpeg
 RST_PIN         = 17
-DC_PIN          = 25
+DC_PIN          = 11
 CS_PIN          = 8
 BUSY_PIN        = 24
 
