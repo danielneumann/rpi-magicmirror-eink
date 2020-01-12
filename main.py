@@ -104,7 +104,7 @@ def main():
 
         if not args.reset:
             if args.cron:
-                logging.info(f'Scheduling the refresh using the schedule "{args.cron}".')
+                logging.info('Scheduling the refresh using the schedule "{args.cron}".')
                 crontab(args.cron, func=refresh)
                 # Initially refresh the display before relying on the schedule
                 asyncio.get_event_loop().run_until_complete(refresh())
