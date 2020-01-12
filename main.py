@@ -74,7 +74,7 @@ def refresh():
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
 
-        # Rotate the image by 90°
+        # Rotate the image by 90
         if is_portrait:
            logging.debug('Rotating image (portrait mode).')
            image = image.rotate(90)
