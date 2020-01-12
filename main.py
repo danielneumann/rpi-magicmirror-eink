@@ -40,8 +40,8 @@ def reset_screen():
     display = AutoEPDDisplay(vcom=-2.06)
     display.clear()
 
-
-async def create_screenshot(file_path):
+@asyncio.coroutine
+def create_screenshot(file_path):
     global display_width
     global display_height
     global wait_to_load
@@ -60,8 +60,8 @@ async def create_screenshot(file_path):
     await browser.close()
     logging.debug('Finished creating screenshot')
 
-
-async def refresh():
+@asyncio.coroutine
+def refresh():
     logging.info('Starting refresh.')
 
     logging.info('Init Display.')
