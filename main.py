@@ -69,7 +69,7 @@ def refresh():
     dims = (display.width, display.height)
 
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
-        logging.debug(f'Created temporary file at {tmp_file.name}.')
+        logging.debug('Created temporary file at {tmp_file.name}.')
         yield create_screenshot(tmp_file.name)
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
