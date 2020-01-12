@@ -10,7 +10,6 @@ from aiocron import crontab
 from pyppeteer import launch
 from PIL import Image
 from IT8951 import constants
-from IT8951.display import AutoEPDDisplay
 
 
 
@@ -37,7 +36,8 @@ url = 'http://localhost:8080'	# URL to create the screenshot of
 
 def reset_screen():
     logging.info('Reset Screen.')
-    display = AutoEPDDisplay(vcom=-2.06)
+    from IT8951.display import AutoEPDDisplay
+    display = AutoEPDDisplay(vcom=-2.06)    
     display.clear()
 
 async def create_screenshot(file_path):
@@ -64,6 +64,7 @@ async def refresh():
     logging.info('Starting refresh.')
 
     logging.info('Init Display.')
+    from IT8951.display import AutoEPDDisplay
     display = AutoEPDDisplay(vcom=-2.06)
     dims = (display.width, display.height)
 
