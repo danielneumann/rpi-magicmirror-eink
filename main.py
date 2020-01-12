@@ -48,16 +48,16 @@ def create_screenshot(file_path):
     global wait_after_load
     global url
     logging.debug('Creating screenshot')
-    browser = yield launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage'], executablePath='/usr/bin/chromium-browser')
-    page = yield browser.newPage()
-    yield page.setViewport({
+    browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage'], executablePath='/usr/bin/chromium-browser')
+    page = await browser.newPage()
+    await page.setViewport({
         "width": display_width,
         "height": display_height
     })
-    yield page.goto(url, timeout=wait_to_load * 1000)
-    yield page.waitFor(wait_after_load * 1000)
-    yield page.screenshot({'path': file_path})
-    yield browser.close()
+    await page.goto(url, timeout=wait_to_load * 1000)
+    await page.waitFor(wait_after_load * 1000)
+    await page.screenshot({'path': file_path})
+    await browser.close()
     logging.debug('Finished creating screenshot')
 
 @asyncio.coroutine
@@ -70,7 +70,7 @@ def refresh():
 
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
         logging.debug('Created temporary file at {tmp_file.name}.')
-        yield create_screenshot(tmp_file.name)
+        await create_screenshot(tmp_file.name)
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
 
