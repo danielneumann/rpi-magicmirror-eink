@@ -34,10 +34,8 @@ wait_to_load = 60		# Page load timeout
 wait_after_load = 18		# Time to evaluate the JS afte the page load (f.e. to lazy-load the calendar data)
 url = 'http://localhost:8080'	# URL to create the screenshot of
 
-def reset_screen():
-    logging.info('Reset Screen.')
-    from IT8951.display import AutoEPDDisplay
-    display = AutoEPDDisplay(vcom=-2.06)    
+def reset_screen(display):
+    logging.info('Reset Screen.') 
     display.clear()
 
 async def create_screenshot(file_path):
@@ -60,13 +58,11 @@ async def create_screenshot(file_path):
     logging.debug('Finished creating screenshot')
 
 
-async def refresh():
+async def refresh(display, dims):
     logging.info('Starting refresh.')
 
     logging.info('Init Display.')
-    from IT8951.display import AutoEPDDisplay
-    display = AutoEPDDisplay(vcom=-2.06)
-    dims = (display.width, display.height)
+
 
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
         logging.debug('Created temporary file at {tmp_file.name}.')
@@ -90,6 +86,10 @@ async def refresh():
 
 def main():
 
+    from IT8951.display import AutoEPDDisplay
+    display = AutoEPDDisplay(vcom=-2.06)
+    dims = (display.width, display.height)
+
     try:
         parser = argparse.ArgumentParser(description='Python EInk MagicMirror')
         parser.add_argument('-d', '--debug', action='store_true', dest='debug',
@@ -107,16 +107,16 @@ def main():
                 logging.info('Scheduling the refresh using the schedule "{args.cron}".')
                 crontab(args.cron, func=refresh)
                 # Initially refresh the display before relying on the schedule
-                asyncio.get_event_loop().run_until_complete(refresh())
+                asyncio.get_event_loop().run_until_complete(refresh(display, dims))
                 asyncio.get_event_loop().run_forever()
             else:
                 logging.info('Only running the refresh once.')
-                asyncio.get_event_loop().run_until_complete(refresh())
+                asyncio.get_event_loop().run_until_complete(refresh(display, dims))
     except KeyboardInterrupt:
         logging.info('Shutting down after receiving a keyboard interrupt.')
     finally:
         logging.info('Resetting screen.')
-        reset_screen()
+        reset_screen(display)
 
 
 if __name__ == '__main__':
