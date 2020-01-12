@@ -4,15 +4,10 @@ import logging
 import tempfile
 import argparse
 import sys
-from time import sleep
 import numpy as np
 from aiocron import crontab
 from pyppeteer import launch
 from PIL import Image
-from IT8951 import constants
-from IT8951.display import AutoEPDDisplay
-
-
 
 # TODO fix ignored KeyboardInterrupt when running in the the event loop (run_forever)
 # TODO implement proper reset and shutdown of the screen when the systemd service is stopped or the raspberry pi is shut down
@@ -21,10 +16,9 @@ from IT8951.display import AutoEPDDisplay
 # Import the waveshare folder (containing the waveshare display drivers) without refactoring it to a module
 # TODO maybe switch to a git submodule here and upgrade to the latest version:
 # https://github.com/waveshare/e-Paper/blob/master/RaspberryPi%26JetsonNano/python/lib/waveshare_epd/epd7in5bc.py
-#sys.path.insert(0, './waveshare')
-sys.path.insert(0, './IT8951')
+sys.path.insert(0, './waveshare')
 # import epd7in5b
-#import epd9in7
+import epd9in7
 
 
 # Global config
@@ -36,9 +30,13 @@ wait_after_load = 18		# Time to evaluate the JS afte the page load (f.e. to lazy
 url = 'http://localhost:8080'	# URL to create the screenshot of
 
 def reset_screen():
-    logging.info('Reset Screen.')
-    display = AutoEPDDisplay(vcom=-2.06)
-    display.clear()
+    global display_width
+    global display_height
+#   epd = epd7in5b.EPD()
+    epd = epd9in7.EPD()
+    epd.init()
+    epd.display_frame([0xFF] * int(display_width * display_height / 4))
+    epd.sleep()
 
 
 async def create_screenshot(file_path):
@@ -61,35 +59,50 @@ async def create_screenshot(file_path):
     logging.debug('Finished creating screenshot')
 
 
+def remove_aliasing_artefacts(image):
+    red = (255,000,000)
+    black = (000,000,000)
+    white = (255,255,255)
+    img = image.convert('RGB')
+    data = np.array(img)
+    # If the R value of the pixel is less than 50, make it black
+    black_mask = np.bitwise_and(data[:,:,0] <= 230, data[:,:,1] <= 135, data[:,:,2] <= 135)
+    # If the R value is higher than
+    red_mask = np.bitwise_and(data[:,:,0] >= 230, data[:,:,1] <= 135, data[:,:,2] <= 135)
+    # Everything else should be white
+    white_mask = np.bitwise_not(np.bitwise_or(red_mask, black_mask))
+    data[black_mask] = black
+    data[red_mask] = red
+    data[white_mask] = white
+    return Image.fromarray(data, mode='RGB')
+
+
 async def refresh():
     logging.info('Starting refresh.')
+    logging.debug('Initializing / waking screen.')
+#    epd = epd7in5b.EPD()
+    epd = epd9in7.EPD()
 
-    logging.info('Init Display.')
-    display = AutoEPDDisplay(vcom=-2.06)
-    dims = (display.width, display.height)
-
+    epd.init()
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
         logging.debug(f'Created temporary file at {tmp_file.name}.')
         await create_screenshot(tmp_file.name)
         logging.debug('Opening screenshot.')
         image = Image.open(tmp_file)
-
+        # Replace all colors with are neither black nor red with white
+        # image = remove_aliasing_artefacts(image)
         # Rotate the image by 90°
         if is_portrait:
            logging.debug('Rotating image (portrait mode).')
            image = image.rotate(90)
         logging.debug('Sending image to screen.')
-
-        image.thumbnail(dims)
-        paste_coords = [dims[i] - image.size[i] for i in (0,1)]  # align image with bottom of display
-        display.frame_buf.paste(image, paste_coords)
-        display.draw_full(constants.DisplayModes.GC16)
-
+        epd.display_frame(epd.get_frame_buffer(image))
+    logging.debug('Sending display back to sleep.')
+    epd.sleep()
     logging.info('Refresh finished.')
 
 
 def main():
-
     try:
         parser = argparse.ArgumentParser(description='Python EInk MagicMirror')
         parser.add_argument('-d', '--debug', action='store_true', dest='debug',
