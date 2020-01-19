@@ -78,7 +78,8 @@ async def refresh(display, dims):
 
         image.thumbnail(dims)
         paste_coords = [dims[i] - image.size[i] for i in (0,1)]  # align image with bottom of display
-        display.frame_buf.paste(image, paste_coords)
+        # display.frame_buf.paste(image, paste_coords)
+        display.frame_buf.paste(image, box=(0, 0, display.width, display.height))
         display.draw_full(constants.DisplayModes.GC16)
 
     logging.info('Refresh finished.')
