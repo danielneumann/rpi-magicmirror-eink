@@ -2,7 +2,7 @@
 import tkinter as tk
 from PIL import Image, ImageChops, ImageTk
 
-from .constants import DisplayModes
+from .constants import DisplayModes, PixelModes, low_bpp_modes
 
 try:
     from .interface import EPD
@@ -51,11 +51,11 @@ class AutoDisplay:
         Write the full image to the device, and display it using mode
         '''
 
-        self.update(self._get_frame_buf().getdata(), (0,0), (self.width, self.height), mode)
+        self.update(self._get_frame_buf().tobytes(), (0,0), (self.width, self.height), mode)
 
         if self.track_gray:
             if mode == DisplayModes.DU:
-                diff_box = self._compute_diff_box(self.prev_frame, self._get_frame_buf(), round_to=4)
+                diff_box = self._compute_diff_box(self.prev_frame, self._get_frame_buf(), round_to=8)
                 self.gray_change_bbox = self._merge_bbox(self.gray_change_bbox, diff_box)
             else:
                 self.gray_change_bbox = None
@@ -71,15 +71,19 @@ class AutoDisplay:
         if self.prev_frame is None:  # first call since initialization
             self.draw_full(mode)
 
+        if mode in low_bpp_modes:
+            round_box = 8
+        else:
+            round_box = 4
+
         # compute diff for this frame
-        # TODO: should not have round_to in this class
-        diff_box = self._compute_diff_box(self.prev_frame, self._get_frame_buf(), round_to=4)
+        diff_box = self._compute_diff_box(self.prev_frame, self._get_frame_buf(), round_to=round_box)
 
         if self.track_gray:
             self.gray_change_bbox = self._merge_bbox(self.gray_change_bbox, diff_box)
             # reset grayscale changes to zero
             if mode != DisplayModes.DU:
-                diff_box = self._round_bbox(self.gray_change_bbox, round_to=4)
+                diff_box = self._round_bbox(self.gray_change_bbox, round_to=round_box)
                 self.gray_change_bbox = None
 
         self.prev_frame = self._get_frame_buf().copy()
@@ -97,7 +101,7 @@ class AutoDisplay:
         xy = (diff_box[0], diff_box[1])
         dims = (diff_box[2]-diff_box[0], diff_box[3]-diff_box[1])
 
-        self.update(buf.getdata(), xy, dims, mode)
+        self.update(buf.tobytes(), xy, dims, mode)
 
     def clear(self):
         '''
@@ -180,14 +184,22 @@ class AutoEPDDisplay(AutoDisplay):
         self.epd = epd
         AutoDisplay.__init__(self, self.epd.width, self.epd.height, **kwargs)
 
-    def update(self, data, xy, dims, mode):
+    def update(self, data, xy, dims, mode, pixel_format=PixelModes.M_4BPP):
+
+        # these modes only use two pixels, so use a more dense packing for them
+        # TODO: 2BPP doesn't seem to refresh correctly?
+        # if mode in low_bpp_modes:
+        #     pixel_format = PixelModes.M_2BPP
+        # else:
+        #     pixel_format = PixelModes.M_4BPP
 
         # send image to controller
         self.epd.wait_display_ready()
         self.epd.load_img_area(
             data,
             xy=xy,
-            dims=dims
+            dims=dims,
+            pixel_format=pixel_format
         )
 
         # display sent image
