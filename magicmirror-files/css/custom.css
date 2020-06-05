@@ -12,12 +12,12 @@ html, body, .bright, .light, .normal, .medium, .dimmed, .today, .calendar-header
   -webkit-font-smoothing : none;
   font-family: "cherry13";
   font-weight: 700;
-  font-size: 13px !important;
+  font-size: 30px !important;
 }
 
 .small, .xsmall, .medium, .large {
   line-height: normal !important;
-  font-size: 13px !important;
+  font-size: 30px !important;
 }
 
 .fa {
@@ -37,7 +37,7 @@ header {
 }
 
 .xlarge {
-  line-height: 30px !important;
+  line-height: 40px !important;
   font-size: 13px !important;
 }
 
@@ -47,10 +47,10 @@ header {
 
 /** Clock **/
   /* Only show the date, not the time */
-.module.clock .time {
+/** .module.clock .time {
   display: none;
 }
-
+**/
 
 
 
