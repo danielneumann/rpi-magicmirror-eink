@@ -60,8 +60,10 @@ async def create_screenshot(file_path):
 
 async def refresh():
     logging.info('Starting refresh.')
-
     logging.info('Init Display.')
+    
+    display = AutoEPDDisplay(vcom=-2.06)
+    dims = (display.width, display.height)
 
 
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
@@ -89,7 +91,6 @@ def main():
 
     from IT8951.display import AutoEPDDisplay
     display = AutoEPDDisplay(vcom=-2.06)
-
     dims = (display.width, display.height)
 
     try:
