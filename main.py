@@ -62,6 +62,7 @@ async def refresh():
     logging.info('Starting refresh.')
     logging.info('Init Display.')
     
+    from IT8951.display import AutoEPDDisplay
     display = AutoEPDDisplay(vcom=-2.06)
     dims = (display.width, display.height)
 
