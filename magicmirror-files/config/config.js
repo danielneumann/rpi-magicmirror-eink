@@ -48,8 +48,7 @@ var config = {
       config: {
         fadeSpeed: 0
         }
-      }
-    },
+      },
     {
       module: "calendar",
       header: "Geburtstage",
