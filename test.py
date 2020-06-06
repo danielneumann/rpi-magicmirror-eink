@@ -76,7 +76,7 @@ async def create_screenshot(file_path):
     logging.debug('Finished creating screenshot')
 
 
-async def refresh(display, dims):
+async def refresh():
     logging.info('Starting refresh.')
 
     with tempfile.NamedTemporaryFile(suffix='.png') as tmp_file:
@@ -112,7 +112,7 @@ def main():
     sleep(1)
     reset_screen(display)
     sleep(1)
-    refresh(display, dims)
+    refresh()
 
 
 if __name__ == '__main__':

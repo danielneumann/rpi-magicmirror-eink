@@ -58,7 +58,7 @@ async def create_screenshot(file_path):
     logging.debug('Finished creating screenshot')
 
 
-async def refresh():
+async def refresh(display, dims):
     logging.info('Starting refresh.')
 
     logging.info('Init Display.')
@@ -107,13 +107,13 @@ def main():
         if not args.reset:
             if args.cron:
                 logging.info('Scheduling the refresh using the schedule "{args.cron}".')
-                crontab(args.cron, func=refresh)
+                crontab(args.cron, func=refresh, display, dims)
                 # Initially refresh the display before relying on the schedule
-                asyncio.get_event_loop().run_until_complete(refresh())
+                asyncio.get_event_loop().run_until_complete(refresh(display, dims))
                 asyncio.get_event_loop().run_forever()
             else:
                 logging.info('Only running the refresh once.')
-                asyncio.get_event_loop().run_until_complete(refresh())
+                asyncio.get_event_loop().run_until_complete(refresh(display, dims))
     except KeyboardInterrupt:
         logging.info('Shutting down after receiving a keyboard interrupt.')
     finally:
