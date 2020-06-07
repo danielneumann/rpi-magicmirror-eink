@@ -22,7 +22,7 @@ var config = {
         locationID: "2886242", //Location ID from http://openweathermap.org/help/city_list.txt
         appid: "ef086543063192ed65649a824d41e658" //openweathermap.org API key.
       }
-    }
+    },
     {
       module: "currentweather",
       position: "top_right",
@@ -48,7 +48,7 @@ var config = {
     },
     {
       module: "calendar",
-      header: "Geburtstage",
+      header: "Termine",
       position: "bottom_bar",
       config: {
         maximumEntries: 10,
@@ -56,7 +56,7 @@ var config = {
         fetchInterval: 3600000, // every 60 min
         animationSpeed: 0,
         fade: false,
-        dateFormat: "DD.MM.",
+        dateFormat: "DD.MM. HH:MM",
         fullDayEventDateFormat: "DD.MM.",
         timeFormat: "absolute",
         urgency: 7,
@@ -65,7 +65,7 @@ var config = {
         calendars: [
           {
             symbol: "calendar-check-o",
-            url: "webcal://www.calendarlabs.com/ical-calendar/ics/46/Germany_Holidays.ics"
+            url: "https://calendar.google.com/calendar/ical/mail.danielkerrin%40gmail.com/private-5585ec0c8e7d82199f6f652e94973d26/basic.ics"
           }
         ]
       }
