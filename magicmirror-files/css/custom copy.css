@@ -1,0 +1,157 @@
+body {
+  margin: 5px;
+  height: calc(100% - 10px) !important;
+  width: calc(100% - 10px) !important;
+}
+
+html, body, .bright, .light, .normal, .medium, .dimmed, .today, .calendar-header-day, header {
+  color: black !important;
+  background: white !important;
+  -webkit-font-smoothing: none !important;
+  font-smooth: never;
+  -webkit-font-smoothing : none;
+  font-family: "cherry13";
+  font-weight: 700;
+  font-size: 30px !important;
+}
+
+.small, .xsmall, .medium, .large {
+  line-height: normal !important;
+  font-size: 30px !important;
+}
+
+.fa {
+  -webkit-font-smoothing: none;
+}
+
+header {
+  font-weight: bold;
+  color: red !important;
+}
+
+.compliments > div > div {
+  /*color: black !important;*/
+  color: red !important;
+  font-weight: 400 !important;
+  font-size: 40px !important;
+}
+
+.xlarge {
+  line-height: 40px !important;
+  font-size: 13px !important;
+}
+
+
+
+
+
+/** Clock **/
+  /* Only show the date, not the time */
+/** .module.clock .time {
+  display: none;
+}
+**/
+
+
+
+/** Calendar Monthly **/
+.calendar_monthly {
+  /* width: 280px; */
+}
+
+.square-box {
+  /* One day box */
+  width: 100%;
+}
+
+.monthPrev, .monthNext {
+  /* Color of the days of the previous month */
+  color: black;
+}
+
+.today {
+  /* Border of the current day */
+  border: 1px solid red !important;
+}
+
+.footer {
+  display: none;
+}
+
+
+
+
+/** Weather **/
+.currentweather {
+  /* width: 280px; */
+}
+
+.calendar-header-day {
+  padding-top: 0px !important;
+}
+
+#calendar-table {
+  padding: 0px !important;
+}
+
+.wi {
+  font-weight: normal !important;
+  font-family: "weathericons" !important;
+  line-height: normal !important;
+}
+
+#module_2_currentweather > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(4) {
+  /* Space character between the weather icons */
+  font-weight: normal !important;
+  font-family: "Roboto Condensed", sans-serif !important;
+}
+
+.module {
+  margin-bottom: 10px !important;
+}
+
+.day {
+  padding-right: 5px !important;
+}
+
+.weather-icon {
+  padding-right: 5px !important;
+}
+
+.min-temp {
+  padding-left: 5px !important;
+}
+
+
+
+
+/* Font Definitions */
+@font-face {
+  font-family: 'cherry10';
+  src: url('fonts/cherry-10-r.ttf')  format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cherry11';
+  src: url('fonts/cherry-11-r.ttf')  format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cherry13';
+  src: url('fonts/cherry-13-r.ttf')  format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cherry13';
+  src: url('fonts/cherry-13-b.ttf')  format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+

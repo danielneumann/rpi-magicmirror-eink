@@ -13,16 +13,17 @@ var config = {
       }
     },
     {
-      module: "MMM-weatherforecast",
-      position: "top_right",	// This can be any of the regions.
-            // Best results in bottom_bar region due to horizontal default layout and icon sizes.
+      module: "weatherforecast",
+      position: "top_right",
+      header: "Köln",
       config: {
-        // See 'Configuration options' for more information.
-        location: "Cologne, DE",
-        locationID: "2886242", //Location ID from http://openweathermap.org/help/city_list.txt
-        appid: "ef086543063192ed65649a824d41e658" //openweathermap.org API key.
+        appendLocationNameToHeader: false,
+        animationSpeed: 0,
+        fade: false,
+        location: "Cologne",
+        appid: "OPEN_WEATHER_API_KEY"
       }
-    }
+    },
     {
       module: "currentweather",
       position: "top_right",
@@ -30,22 +31,24 @@ var config = {
         appendLocationNameToHeader: false,
         animationSpeed: 0,
         fade: false,
-        location: "Cologne, DE",
-        appid: "ef086543063192ed65649a824d41e658"
+        location: "Vienna",
+        appid: "OPEN_WEATHER_API_KEY"
       }
     },
     {
       module: "clock",
       position: "middle_center",
       config: {
-        showWeek: true,
-        displaySeconds: false,
-        showSunTimes: true,
-        showMoonTimes: true,
-        lat: "50.960061",
-        lon: "6.980950"
+        showWeek: true
       }
     },
+    {
+      module: "compliments",
+      position: "middle_center",
+      config: {
+        fadeSpeed: 0
+        }
+      },
     {
       module: "calendar",
       header: "Geburtstage",
