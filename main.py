@@ -32,8 +32,9 @@ display_height = 825		# Height of the display
 is_portrait = False		# True of the display should be in landscape mode (make sure to adjust the width and height accordingly)
 wait_to_load = 60		# Page load timeout
 wait_after_load = 18		# Time to evaluate the JS afte the page load (f.e. to lazy-load the calendar data)
-#url = 'http://localhost:8080'	# URL to create the screenshot of
-url = 'https://covid19.who.int/'
+url = 'http://localhost:8080'	# URL to create the screenshot of
+#url = 'http://covid19.who.int'
+#url = 'http://google.com'
 
 def reset_screen(display):
     logging.info('Reset Screen.') 
