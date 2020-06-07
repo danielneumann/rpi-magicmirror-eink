@@ -15,9 +15,7 @@ var config = {
     {
       module: "MMM-weatherforecast",
       position: "top_right",	// This can be any of the regions.
-            // Best results in bottom_bar region due to horizontal default layout and icon sizes.
       config: {
-        // See 'Configuration options' for more information.
         location: "Cologne, DE",
         locationID: "2886242", //Location ID from http://openweathermap.org/help/city_list.txt
         appid: "ef086543063192ed65649a824d41e658" //openweathermap.org API key.
