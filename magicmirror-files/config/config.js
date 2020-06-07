@@ -1,6 +1,6 @@
 var config = {
-  address: "localhost",
   port: 8080,
+  address: "0.0.0.0",
   ipWhitelist: [],
   language: "de",
   timeFormat: 24,
@@ -14,11 +14,11 @@ var config = {
     },
     {
       module: "MMM-weatherforecast",
-      position: "top_right",	// This can be any of the regions.
+      position: "top_right",
       config: {
         location: "Cologne, DE",
-        locationID: "2886242", //Location ID from http://openweathermap.org/help/city_list.txt
-        appid: "ef086543063192ed65649a824d41e658" //openweathermap.org API key.
+        locationID: "2886242",
+        appid: "ef086543063192ed65649a824d41e658"
       }
     },
     {
